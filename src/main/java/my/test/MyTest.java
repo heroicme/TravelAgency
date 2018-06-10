@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
  */
 //wo change
     // change
+    //change1
 public class MyTest {
     public static void main(String[] args) {
         Logger log=Logger.getLogger(MyTest.class);
