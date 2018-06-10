@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="my.dao.UserMapper">
+ 
+ <!-- public List<User> getAll(); -->
+ <select id="getAll" resultType="my.bean.User">
+		select * from user_tbl
+	</select>
+ 
+ 
+ <!-- public User userCheck(User user);-->
+ 
+  <select id="userCheck" resultType="my.bean.User" parameterType="string">
+ select * from user_tbl where userName=#{userName} and userPassword=#{userPassword}
+ </select>
+  
+ 
+ <!--public int uCheck(String userName);  -->
+ <select id="uCheck" resultType="int">
+ 
+ select count(*) from user_tbl where userName=#{userName}
+ </select>
+ 
+ 
+ 
+ <!--public void save(User us); 只保存注册的用户名与密码 -->
+ 
+ <insert id="save" parameterType="my.bean.User" useGeneratedKeys="true" keyProperty="userId">
+ 
+ 
+ insert into user_tbl(userName,userPassword,email,gender)values(#{userName},#{userPassword},#{email},#{gender})
+ 
+ 
+ 
+ </insert>
+ <!--  public void modifyPassword(User user);-->
+ 
+ <update id="modifyPassword">
+ 
+ update  user_tbl set userPassword=#{userPassword} where userName=#{userName}
+ 
+ 
+ </update>
+ 
+ 
+ 
+ 
+ 
+ 
+ <!--  public void saveOrder(Order order);-->
+ 
+ <insert id="saveOrder" parameterType="my.bean.Order" useGeneratedKeys="true" keyProperty="orderId">
+ 
+ <bind name="_totalPrice" value="totalPrice*goNums"/>
+ insert into order_tbl (imgPath,orderTime,orderStatus,totalPrice,userNumber,goNums,orderTitle,goTime,current,phone,name)
+ 
+ value(#{imgPath},#{orderTime},#{orderStatus},#{_totalPrice},#{userNumber},#{goNums},#{orderTitle},#{goTime},#{current},#{phone},#{name})
+ 
+ 
+ </insert>
+ 
+<!-- 	public Order getCurrentOrder(String time); -->
+<select id="getCurrentOrder"  resultType="my.bean.Order" >
+
+select * from order_tbl where orderTime=#{time}
+
+</select>
+ 
+ 
+ 
+ 
+ 
+ 
+ <!--public List<Order> getOrders(int userNum);  -->
+ <select id="getOrders" resultType="my.bean.Order">
+ 
+ select * from order_tbl  where userNumber=#{userNum}
+ 
+ 
+ </select>
+ 
+ 
+ 
+ <!-- public Order order(Integer payId); -->
+ 
+ 
+ 
+ 
+ <select id="order" resultType="my.bean.Order">
+ 
+ select * from order_tbl where orderId=#{payId}
+ 
+ 
+ </select>
+ 
+ 
+ 
+ 
+ 
+ <!--	public int payCheck(Account account);  -->
+ 
+ 
+ 
+ <select id="payCheck" resultType="int">
+ 
+ 
+ select count(*) from account_tbl where accountPassword=#{accountPassword} 
+ and accountType=#{accountType}
+ 
+ 
+ </select>
+ 
+ <!--public Account getInfo(Account account);  -->
+ <select id="getInfo" resultType="my.bean.Account">
+ 
+ 
+ select * from account_tbl where accountPassword=#{accountPassword} 
+ and accountType=#{accountType} and accountUserId=#{accountUserId}
+ </select>
+ 
+ 
+ 
+ <!--public void update(Account acc);  -->
+ <update id="update" >
+ 
+ 
+ update account_tbl set accountMoney=#{accountMoney}  where accountPassword=#{accountPassword} 
+ and accountType=#{accountType} and accountUserId=#{accountUserId}
+ 
+ 
+ 
+ 
+ </update>
+ 
+ 
+ 
+ <!--public Order getOrder(Account account);  -->
+ <select id="getOrder" resultType="my.bean.Order"  >
+ 
+ 
+ select * from order_tbl where orderId=#{aorderId}
+ 
+ </select>
+ 
+ 
+ <!--public void updateOrderStatus(Order ord);  -->
+ <update id="updateOrderStatus" >
+ 
+ update order_tbl set orderStatus=#{orderStatus} ,payById=#{payById} where orderId=#{orderId}
+ 
+ </update>
+ <!-- public List<Order> getAllOrders(); -->
+ 
+ 
+ <select id="getAllOrders" resultType="my.bean.Order">
+ 
+ select * from order_tbl
+ 
+ 
+ 
+ </select>
+ 
+ 
+ <!--public void updateTime(User user);  -->
+ <update id="updateTime">
+ update user_tbl set loginTime=#{loginTime} where userId=#{userId}
+ 
+ </update>
+ <!-- public Order getOrderById(int oId); -->
+ <select id="getOrderById"  resultType="my.bean.Order">
+ 
+ 
+ select * from order_tbl where orderId=#{oId}
+ 
+ </select>
+ <!-- public void updateStatus(Order ord); -->
+ 
+ 
+ 
+ 
+ <update id="updateStatus">
+ 
+ update order_tbl set orderStatus=#{orderStatus}  where orderId=#{orderId}
+ 
+ </update>
+ <!-- public void deleteOrder(int oId); -->
+ 
+ 
+ <delete id="deleteOrder" >
+ 
+ 
+ delete from order_tbl where orderId=#{oId}
+ 
+ 
+ </delete>
+ <!--public void delOrder(int deleId);  -->
+ 
+ <delete id="delOrder">
+ 
+ delete from order_tbl where orderId=#{deleId} 
+ 
+ </delete>
+ 
+ 
+ 
+ 
+ 
+ <!-- public int uOrder(int id); -->
+ <select id="uOrder" resultType="int">
+ 
+ select count(*) from order_tbl where userNumber=#{id}
+ 
+ </select>
+ 
+ <!-- public void delUser(int id); -->
+ <delete id="delUser">
+ 
+ delete from user_tbl where userId=#{id}
+ 
+ </delete>
+ 
+ 
+ 
+ <!-- public User seeUser(int id); -->
+ <select id="seeUser" resultType="my.bean.User">
+ 
+ select * from user_tbl where userId=#{id}
+ </select>
+ 
+ <!-- public void createAccount(int id); -->
+ 
+ 
+ 
+ <insert id="createAccount" >
+ 
+ 
+ insert into account_tbl(accountUserId,accountPassword,accountType)values(#{id},"12345","支付宝")
+ ,(#{id},"12345","微信")
+ 
+ 
+ </insert>
+ 
+ 
+ 
+ 
+ <!-- public List<Account> checkAccount(int id); -->
+ 
+ 
+ <select id="checkAccount" resultType="my.bean.Account">
+ 
+ 
+ select * from account_tbl where accountUserId=#{id}
+ </select>
+ 
+ 
+ <!-- public void updateAccount(Account ac); -->
+ 
+ 
+ 
+ 
+ 
+ <!--public Order checkStatus(int oId);  -->
+ <select id="checkStatus" resultType="my.bean.Order">
+ 
+ 
+ select * from order_tbl where orderId=#{oId}
+ </select>
+ 
+ <!-- public void editMyInfo(User user); -->
+ <update id="editMyInfo">
+ 
+ update user_tbl set userName=#{userName},userPassword=#{userPassword},email=#{email} where userId=#{userId}
+ 
+ </update>
+ 
+ <!--public List<Order> serchOrders(String key1);  -->
+ <select id="serchOrders" resultType="my.bean.Order">
+ 
+ 
+ select * from order_tbl where  orderTitle  like #{key1}
+ 
+ 
+ 
+ </select>
+ 
+ 
+ 
+ 
+ 
+ <!--public List<User> sercheUsers(String key);  -->
+ <select id="sercheUsers"  resultType="my.bean.User">
+ 
+ select * from user_tbl where userName like #{key}
+ 
+ 
+ </select>
+ 
+ 
+<!-- public Products getCurrenProduct(Order ord); -->
+
+<select id="getCurrenProduct"  resultType="my.bean.Products">
+
+
+select * from product_tbl where productName=#{orderTitle} 
+</select>
+ 
+ <!-- public int getCurrenNum(Order ord); -->
+ 
+ 
+ 
+ <select id="getCurrenNum" resultType="int">
+ 
+ 
+ select count(*) from order_tbl where orderTitle=#{orderTitle}  and orderStatus=#{orderStatus}
+ </select>
+ 
+ 
+ 
+ 
+ <!--public void updateCurrenNum(Products ps);  -->
+ <update id="updateCurrenNum">
+ 
+ update product_tbl set sales=#{sales} where productName=#{productName}
+ 
+ 
+ </update>
+ 
+ 
+ 
+ <!-- public void addComment(@Param("id")int id, @Param("comment")String comment); -->
+ 
+ <update id="addComment">
+ 
+ 
+ update order_tbl set comment=#{comment} where orderId=#{id}
+ 
+ 
+ </update>
+ 
+ 
+ <!--public void updatePayPassword(Account acc);  -->
+ 
+ 
+ 
+ 
+ 
+ 
+ <update id="updatePayPassword">
+ 
+ 
+ 
+ update account_tbl set accountPassword=#{accountPassword} 
+ where accountType=#{accountType} and accountUserId=#{accountUserId}
+ 
+ 
+ 
+ </update>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ </mapper>

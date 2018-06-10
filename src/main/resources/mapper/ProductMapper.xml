@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="my.dao.ProductMapper">
+
+
+<!-- List<Products> getAll(); -->
+
+<select id="getAll" resultType="my.bean.Products" useCache="true"  >
+
+select * from product_tbl 
+
+</select>
+
+<!--Products getByNum(int num);-->
+
+<select id="getByNum"  resultType="my.bean.Products">
+
+select * from product_tbl where productId=#{num}
+</select>
+
+
+
+<!-- 	List<Products> getBy(Products product);//按携带相应参数查询 -->
+
+<select id="getBy" resultType="my.bean.Products">
+
+
+select * from product_tbl 
+
+
+<where>
+	 		
+	 		<choose>
+	 			<when test="cityNum!=null">
+	 				cityNum=#{cityNum}
+	 			</when>
+	 			<when test="productName!=null">
+	 			<bind name="_productName" value="'%'+productName+'%'"/>
+	 				productName like #{_productName}
+	 			</when>
+	 			
+	 			<otherwise>
+	 				type=#{type}
+	 			</otherwise>
+	 		</choose>
+	 	</where>
+
+</select>
+
+
+
+<!--List<Products> getAllProject();  -->
+
+<select id="getAllProject" resultType="my.bean.Products">
+select * from product_tbl
+</select>
+
+
+<!--Products getProduct(int productId);  -->
+
+
+<select id="getProduct"  resultType="my.bean.Products">
+
+select * from product_tbl where productId=#{productId}
+
+
+</select>
+
+
+<!-- void updateProduct(Products product); -->
+<update id="updateProduct">
+
+
+update product_tbl set productName=#{productName},imgPath=#{imgPath},price=#{price},productDesc=#{productDesc},type=#{type} 
+where productId=#{productId}
+
+
+
+</update>
+<!-- void deleteProduct(int id); -->
+
+
+<delete id="deleteProduct">
+
+delete from product_tbl where productId=#{id}
+
+
+</delete>
+
+<!--void deleteProducttip(int id);  -->
+<delete id="deleteProducttip">
+delete from producttip_tbl where  tipId=#{id}
+
+</delete>
+<!--void addProduct(Products product);  -->
+<insert id="addProduct" >
+
+
+
+
+insert into product_tbl (productName,cityNum,price,productDesc,type,imgPath,supplier)
+values(#{productName},#{cityNum},#{price},#{productDesc},#{type},#{imgPath},#{supplier})
+
+
+
+
+
+
+
+</insert>
+<!--ProductTip getTip(int num);  -->
+
+<select id="getTip"  resultType="my.bean.ProductTip">
+
+select * from producttip_tbl where tipId=#{num}
+
+</select>
+
+
+
+
+<!-- List<Products> serchProduct(String key); -->
+<select id="serchProduct"  resultType="my.bean.Products">
+
+select * from product_tbl where productName like #{key}
+
+</select>
+
+
+<!-- ProductTip getProductTip(int id); -->
+<select id="getProductTip" resultType="my.bean.ProductTip" >
+
+
+select * from producttip_tbl where tipId= #{id}
+
+
+
+
+
+</select>
+
+
+<!-- 	void updateProductTip(ProductTip ptip); -->
+<update id="updateProductTip">
+
+
+
+update producttip_tbl set   feature=#{feature}  ,pDesc=#{pDesc},cost=#{cost},notice=#{notice} ,comment=#{comment}  where tipId=#{tipId}
+
+
+
+
+</update>
+
+
+
+<!--void addProducttip();  -->
+<insert id="addProducttip"  >
+
+
+insert into producttip_tbl value()
+	
+
+
+
+
+
+</insert>
+
+
+
+
+<!--获取用户评论功能  -->
+<!--List<Order> getNowOrder(String pName);  -->
+<select id="getNowOrder" resultType="my.bean.Order">
+
+
+select * from order_tbl where orderTitle=#{pName}
+
+
+</select>
+
+<!-- void updateComment(int num, String comment); -->
+
+
+<update id="updateComment">
+
+
+update producttip_tbl set comment=#{comment} where tipId=#{num}
+
+
+</update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

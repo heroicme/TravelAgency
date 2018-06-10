@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<!--开启全局二级缓存 一级缓存一直开启 -->
+		<setting name="cacheEnabled" value="true" />
+		<!--开启延迟加载功能 -->
+		<setting name="lazyLoadingEnabled" value="true" />
+		<setting name="aggressiveLazyLoading" value="false" />
+		
+		
+		
+		   
+	</settings>
+<plugins>
+<plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+
+
+</plugins>
+	<databaseIdProvider type="DB_VENDOR">
+		<property name="MySQL" value="mysql" />
+		<property name="Oracle" value="oracle" />
+		<property name="SQL Server" value="sqlserver" />
+	</databaseIdProvider>
+
+
+
+</configuration>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+    <!--扫描 包 -->
+    <context:component-scan base-package="my">
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+
+    <!--引入数据连接信息文件 配置数据源 -->
+    <context:property-placeholder location="classpath:dbconfig.properties"/>
+    <bean id="pooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+        <property name="driverClass" value="${jdbc.driverClass}"></property>
+        <property name="user" value="${jdbc.user}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <property name="acquireIncrement" value="${jdbc.acquireIncrement}"></property>
+        <!--连接关闭时默认将所有未提交的操作回滚。Default: false -->
+        <property name="autoCommitOnClose" value="false"></property>
+        <!--初始化时获取三个连接-->
+        <property name="initialPoolSize" value="${initialPoolSize}"></property>
+        <property name="maxIdleTime" value="${maxIdleTime}"></property>
+        <property name="maxPoolSize" value="${maxPoolSize}"></property>
+        <property name="minPoolSize" value="${minPoolSize}"></property>
+
+
+    </bean>
+
+
+    <!--整合mybatis -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="pooledDataSource"></property>
+        <!--mybatis全局配置文件 -->
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+    </bean>
+
+
+    <!-- 将mybatis接口的实现加到spring ioc容器中 自动创建接口代理类 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="my.dao"></property>
+    </bean>
+
+
+    <!--事务控制配置 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="pooledDataSource"></property>
+    </bean>
+    <!-- 通过配置来控制事务 切点（即需要切入的方法） -->
+    <tx:annotation-driven/>
+    <!-- 	<aop:config>
+            <aop:pointcut expression="execution(*my.service..*(..))"
+                id="txPoint" />
+            <aop:advisor advice-ref="txAdvice" pointcut-ref="txPoint" />
+        </aop:config>
+        配置事务增强 如何切入
+
+
+        <tx:advice id="txAdvice" transaction-manager="transactionManager">
+            <tx:attributes>
+                所有方法都是事务方法
+                <tx:method name="*" />
+                以get开始都是事务方法
+                <tx:method name="get*" read-only="true" />
+            </tx:attributes>
+        </tx:advice> -->
+
+
+</beans>

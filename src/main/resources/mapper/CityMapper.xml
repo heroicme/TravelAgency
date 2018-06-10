@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="my.dao.CityMapper">
+ 
+ 
+ <!--	CityInfo getCityInfo(String cityTn);  -->
+ <select id="getCityInfo" resultType="my.bean.City" >
+ select * from city_tbl where cityTn=#{cityTn};
+ </select>
+ 
+ 
+ 
+ <!--CityPicture getCp(String cityTn,String type);  城市的名片图-->
+ <select id="getCp" resultType="my.bean.CityPicture">
+ select * from picture_tbl  where pNum=#{cityTn} and pType=#{type}
+ </select>
+ 
+ 
+ <!--List<CityPicture> getNav(String cityTn,String type); -->
+ 
+ <select id="getNav" resultType="my.bean.CityPicture">
+ select * from picture_tbl  where pNum=#{cityTn} and pType=#{type}
+ </select>
+
+  
+  
+  <!-- List getJdSurvey(int id); -->
+  <select id="getJdSurvey"  resultType="my.bean.Scenery">
+  
+  select * from scenery_tbl where sNum=#{id}
+  
+  </select>
+  
+  
+  
+  
+  <!-- List getMsSurvey(int id); -->
+  
+  <select id="getMsSurvey" resultType="my.bean.Food">
+  
+  select * from food_tbl where sNum=#{id}
+  
+  </select>
+  
+  
+  <!--List getYlSurvey(int id);
+
+	List getJRwSurvey(int id);
+
+	List getWhSurvey(int id);
+
+	List getLsSurvey(int id);  -->
+  
+  
+  <select id="getYlSurvey"  resultType="my.bean.Entertainment"> select * from entertainment_tbl where sNum=#{id}</select>
+  
+   <select id="getJRwSurvey"  resultType="my.bean.Character"> select * from character_tbl where sNum=#{id}</select>
+  
+   <select id="getWhSurvey"  resultType="my.bean.Culture"> select * from culture_tbl where sNum=#{id}</select>
+  
+   <select id="getLsSurvey"   resultType="my.bean.History"> select * from history_tbl where sNum=#{id}</select>
+  
+  
+  
+  <!--List<City> getCityList();  -->
+  
+  
+  
+  <select id="getCityList" resultType="my.bean.City">
+  
+  
+  select * from city_tbl
+  
+  </select>
+  
+ </mapper>

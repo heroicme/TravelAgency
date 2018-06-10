@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="my.dao.AdminMapper">
+
+	<!-- int adminCheck(Admin admin); -->
+	<select id="adminCheck" resultType="int">
+		select count(*) from admin_tbl where adminName=#{adminName} and
+		adminPassword=#{adminPassword}
+	</select>
+
+
+<!-- Admin getAdmin(Admin admin); -->
+<select id="getAdmin"  resultType="my.bean.Admin" >
+
+select * from admin_tbl where adminName=#{adminName} and
+		adminPassword=#{adminPassword}
+
+</select>
+
+<!-- void editMyInfo(Admin admin); -->
+
+<update id="editMyInfo">
+
+
+update admin_tbl set adminName=#{adminName},adminPassword=#{adminPassword} where adminId=#{adminId}
+
+
+
+</update>
+</mapper>
